@@ -1,20 +1,29 @@
-pipeline{
-    agent { docker { image 'node:14'
-           args '-u root:root'}}
-    stages{
-      stage('Dep install'){ 
-        steps{
-         //   sh 'npm cache clean'
-         //   sh 'sudo chown -R 995:993 "/.npm"'
-            sh 'npm install'
+pipeline {
+    agent {
+        docker {
+            image 'node:14'
+            args '-u root:root'
         }
-      } 
-      stage('package'){
-        steps{
-            sh 'npm pack'
+    }
+    stages {
+        stage('Dep install') { 
+            steps {
+                // Uncomment if needed
+                // sh 'npm cache clean'
+                // sh 'sudo chown -R 995:993 "/.npm"'
+                sh 'npm install'
+            }
+        } 
+        stage('Package') {
+            steps {
+                sh 'npm pack'
+            }
+        } 
+        stage('Upload Artifact') {
+            steps {
+                // Assuming the artifact is created in the current directory
+                archiveArtifacts artifacts: '*.tgz', allowEmptyArchive: true
+            }
         }
-      } 
-      stage('upload artifact'){
-      }
     }
 }
