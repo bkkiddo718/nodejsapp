@@ -21,8 +21,9 @@ pipeline {
         } 
         stage('Upload Artifact') {
             steps {
-                // Assuming the artifact is created in the current directory
-                archiveArtifacts artifacts: '*.tgz', allowEmptyArchive: true
+                sh 'curl -uadmin:AP8gcgmmset5jeYChTJYDN6XmDd -T \
+                *.tgz \
+                 "http://ec2-54-146-83-250.compute-1.amazonaws.com:8081/artifactory/utc-nodejs/utc-app${BUILD_ID}.tgz"'
             }
         }
     }
